@@ -50,7 +50,7 @@ namespace Iaea.SG.EQUIS.Frontend.Web.JWT.Filters
             if (!identity.IsAuthenticated)
                 return false;
 
-            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
+            var usernameClaim = identity.FindFirst(ErmlClaimTypes.LoginName);
             username = usernameClaim?.Value;
 
             if (string.IsNullOrEmpty(username))

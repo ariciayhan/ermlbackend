@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Auth Erml Mobile ";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            Please click the button below application will open automatically or open the application or scan the QR Code !
+        </p>
+        @if (ViewBag.QRCodeImage != null)
+        {
+            <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px" />
+        }
+        <p><a class="btn btn-default" href='sequoia://auth?token=@(ViewBag.Token)'>Open ERML Mobile App</a></p>
+
+        <p>
+            @ViewBag.Token
+        </p>
+    </div>
+
+</div>

@@ -13,12 +13,11 @@ namespace Iaea.SG.EQUIS.Frontend.Web.API.m
         {
             if (CheckUser(username, password))
             {
-                return JwtManager.GenerateToken(new[] { 
-                    new Claim("username", username),
-                    new Claim("FullName", username),
-                    new Claim("LoginName", username),
-                    new Claim("EmployeeId", username),
-                    new Claim("Endpoint", username)}
+                return JwtManager.GenerateToken(new[] {                     
+                    new Claim(ErmlClaimTypes.LoginName, username),
+                    new Claim(ErmlClaimTypes.FullName, "Ayhan Ariciogullarindan"),
+                    new Claim(ErmlClaimTypes.EmployeeId, "12354")
+                    }
                 );
             }
 
