@@ -10,25 +10,40 @@ using QRCoder;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net;
 
 namespace WebApi.Jwt
 {
     public class HomeController : Controller
     {
+        public string GetIPAddress()
+        {
+            return System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Request.Url.Authority); // `Dns.Resolve()` method is deprecated.
+            IPAddress ipAddress = ipHostInfo.AddressList[0];
+            return ipAddress.ToString();
+        }
+
+        private string GetBaseUrl()
+        {
+            return string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+        }
+
         public ActionResult Index()
         {
             var token = JwtManager.GenerateToken(new[] {
-                    new Claim(ErmlClaimTypes.LoginName, "ariciogull"),
-                    new Claim(ErmlClaimTypes.FullName, "Ayhan Ariciogullarindan"),
-                    new Claim(ErmlClaimTypes.EmployeeId, "12354"),
-                    new Claim(ErmlClaimTypes.Host, @"sequoia-test.sg.iaea.org"),
-                    new Claim(ErmlClaimTypes.ServerIp, @"192.168.0.221"),
-                    new Claim(ErmlClaimTypes.BaseUrl, @"http://192.168.0.221/jwt/"),
-
+                        new Claim(ErmlClaimTypes.LoginName, "ariciogull"),
+                        new Claim(ErmlClaimTypes.FullName, "Ayhan Ariciogullarindan"),
+                        new Claim(ErmlClaimTypes.EmployeeId, "12354"),                                       
+                        new Claim(ErmlClaimTypes.BaseUrl, GetBaseUrl()),
+                        new Claim(ErmlClaimTypes.ServerIp, GetIPAddress())
                     }
                 );
 
             ViewBag.Token = token;
+            ViewBag.ServerIp = GetIPAddress();
+            ViewBag.BaseUrl = GetBaseUrl();            
 
             using (MemoryStream ms = new MemoryStream())
             {  
